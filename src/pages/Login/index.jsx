@@ -6,11 +6,13 @@ import Button from "@mui/material/Button";
 
 import styles from "./Login.module.scss";
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { fetchAuth } from '../../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAuth, selectIsAuth } from '../../redux/authSlice';
+import { Navigate } from 'react-router-dom';
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
   const {
     register,
     setError,
@@ -18,14 +20,26 @@ export const Login = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'test@test.com',
+      password: '12345',
     },
     mode: 'onChange',
   });
-  const onSubmit = (value) => {
-    dispatch(fetchAuth(value));
+  const onSubmit = async (value) => {
+    const data = await dispatch(fetchAuth(value));
+
+    if (!data.payload) {
+      alert('Вы не авторизованы!');
+    }
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token);
+    }
   };
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
+  console.log(isAuth);
+
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
