@@ -7,7 +7,6 @@ import Avatar from '@mui/material/Avatar';
 
 import styles from './Login.module.scss';
 import { useForm } from 'react-hook-form';
-import { maxLengthCreator } from '../../utils/validators';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegister, selectIsAuth } from '../../redux/authSlice';
 import { Navigate } from 'react-router-dom';
