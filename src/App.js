@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 
-import { Header } from './components';
+import { CommentsBlock, Header } from './components';
 import { Home, FullPost, Registration, AddPost, Login } from './pages';
 import { fetchAuthMe } from './redux/authSlice';
 
@@ -24,6 +24,7 @@ function App() {
           <Route path="/add-post" element={<AddPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/comments/:id" element={<CommentsBlock />} />
         </Routes>
       </Container>
     </>

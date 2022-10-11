@@ -9,7 +9,7 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchRemovePost, fetchPosts } from '../../redux/postsSlice';
 
@@ -28,7 +28,7 @@ export const Post = ({
   isEditable,
 }) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const onClickRemove = async () => {
     try {
       if (window.confirm('Вы действительно удалить статью?')) {
@@ -39,6 +39,9 @@ export const Post = ({
       console.warn(error);
       alert('Не удалось удалить статью!');
     }
+  };
+  const onClickComments = () => {
+    navigate(`/comments/${id}`);
   };
   if (isLoading) {
     return <PostSkeleton />;
@@ -61,7 +64,7 @@ export const Post = ({
       {imageUrl && (
         <img
           className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-          src={imageUrl}
+          src={imageUrl ? imageUrl : ''}
           alt={title}
         />
       )}
@@ -85,7 +88,7 @@ export const Post = ({
               <span>{viewsCount}</span>
             </li>
             <li>
-              <CommentIcon />
+              <CommentIcon onClick={onClickComments} />
               <span>{commentsCount}</span>
             </li>
           </ul>

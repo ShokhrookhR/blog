@@ -17,21 +17,24 @@ export const AddPost = () => {
   const [tags, setTags] = React.useState('');
   const [imageUrl, setImageUrl] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
+  const [isImageLoading, setImageLoading] = React.useState(false);
   const inputFileRef = React.useRef(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = Boolean(id);
   const handleChangeFile = async (event) => {
     try {
+      setImageLoading(true);
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append('image', file);
       const { data } = await axios.post('/upload', formData);
       setImageUrl(data.url);
+      setImageLoading(false);
       console.log(data);
     } catch (error) {
       console.warn(error);
-      alert('Не удалось загрузит картинку!');
+      alert('Не удалось загрузить картинку!');
     }
   };
 
@@ -56,6 +59,7 @@ export const AddPost = () => {
         : await axios.post('/posts', fields);
       const _id = isEditing ? id : data._id;
       navigate(`/posts/${_id}`);
+      window.localStorage.setItem('postId', _id);
     } catch (error) {
       console.warn(error);
       alert(error);
@@ -112,7 +116,7 @@ export const AddPost = () => {
           />
         </>
       )}
-
+      {isImageLoading && <div>Uploading Image...</div>}
       <br />
       <br />
       <TextField

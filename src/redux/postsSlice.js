@@ -12,6 +12,10 @@ export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
 export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (id) => {
   await axios.delete(`/posts/${id}`);
 });
+export const fetchComments = createAsyncThunk('posts/fetchComments', async (id) => {
+  const { data } = await axios.get(`/comments/${id}`);
+  return data;
+});
 
 const initialState = {
   posts: {
@@ -19,6 +23,10 @@ const initialState = {
     status: 'loading',
   },
   tags: {
+    items: [],
+    status: 'loading',
+  },
+  comments: {
     items: [],
     status: 'loading',
   },
@@ -55,11 +63,24 @@ const postsSlice = createSlice({
       state.tags.items = [];
       state.tags.status = 'error';
     });
+    builder.addCase(fetchComments.pending, (state) => {
+      state.comments.items = [];
+      state.comments.status = 'loading';
+    });
+    builder.addCase(fetchComments.fulfilled, (state, action) => {
+      state.comments.items = action.payload;
+      state.comments.status = 'loaded';
+    });
+
+    builder.addCase(fetchComments.rejected, (state) => {
+      state.comments.items = [];
+      state.comments.status = 'error';
+    });
   },
 });
 
-
 export const postsSelector = (state) => state.posts;
+export const commentsSelector = (state) => state.posts.comments;
 // export const {} = postsSlice.actions;
 export const postsReducer = postsSlice.reducer;
 // export default postsReducer;
