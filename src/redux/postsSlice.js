@@ -16,6 +16,13 @@ export const fetchComments = createAsyncThunk('posts/fetchComments', async (id) 
   const { data } = await axios.get(`/comments/${id}`);
   return data;
 });
+export const fetchAllComments = createAsyncThunk('posts/fetchAllComments', async () => {
+  const { data } = await axios.get('/comments');
+  return data;
+});
+export const fetchCommentText = createAsyncThunk('posts/fetchCommentText', async (text) => {
+  await axios.post(`/comments`, text);
+});
 
 const initialState = {
   posts: {
@@ -29,13 +36,18 @@ const initialState = {
   comments: {
     items: [],
     status: 'loading',
+    newCommentText: '',
   },
 };
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    onChangeCommentText: (state, action) => {
+      state.comments.newCommentText = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state) => {
       state.posts.items = [];
@@ -76,11 +88,35 @@ const postsSlice = createSlice({
       state.comments.items = [];
       state.comments.status = 'error';
     });
+    builder.addCase(fetchAllComments.pending, (state) => {
+      state.comments.items = [];
+      state.comments.status = 'loading';
+    });
+    builder.addCase(fetchAllComments.fulfilled, (state, action) => {
+      state.comments.items = action.payload;
+      state.comments.status = 'loaded';
+    });
+
+    builder.addCase(fetchAllComments.rejected, (state) => {
+      state.comments.items = [];
+      state.comments.status = 'error';
+    });
+    builder.addCase(fetchCommentText.pending, (state) => {
+      state.comments.status = 'loading';
+    });
+    builder.addCase(fetchCommentText.fulfilled, (state, action) => {
+      state.comments.newCommentText = '';
+      state.comments.status = 'loaded';
+    });
+
+    builder.addCase(fetchCommentText.rejected, (state) => {
+      state.comments.status = 'error';
+    });
   },
 });
 
 export const postsSelector = (state) => state.posts;
 export const commentsSelector = (state) => state.posts.comments;
-// export const {} = postsSlice.actions;
+export const { onChangeCommentText } = postsSlice.actions;
 export const postsReducer = postsSlice.reducer;
 // export default postsReducer;

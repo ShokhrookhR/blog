@@ -6,13 +6,20 @@ import { CommentsBlock } from "../components/CommentsBlock";
 import axios from '../axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { fetchCommentText, commentsSelector } from '../redux/postsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const FullPost = () => {
   const [data, setData] = React.useState([]);
-  // const [commentData, setCommentData] = React.useState([]);
+  const [commentValue, setCommentValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
-  const { id } = useParams();
+  const dispatch = useDispatch();
 
+  const { id } = useParams();
+  const onSubmitChild = async (value) => {
+    dispatch(fetchCommentText({ text: value }));
+    setCommentValue(value);
+  };
   React.useEffect(() => {
     setIsLoading(true);
     axios
@@ -20,13 +27,13 @@ export const FullPost = () => {
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
+        window.localStorage.setItem('postId', id);
       })
       .catch((err) => {
         console.log('Не удалось загрузить пост');
       });
   }, []);
-  
-  
+
   if (isLoading) {
     return <Post isLoading={true} />;
   }
@@ -44,9 +51,8 @@ export const FullPost = () => {
         isFullPost>
         <ReactMarkdown children={data.text} />
       </Post>
-      <CommentsBlock
-        >
-        <Index />
+      <CommentsBlock commentValue={commentValue}>
+        <Index onSubmit={onSubmitChild} />
       </CommentsBlock>
     </>
   );

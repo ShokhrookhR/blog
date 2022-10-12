@@ -10,8 +10,8 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { fetchRemovePost, fetchPosts } from '../../redux/postsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRemovePost, fetchPosts, commentsSelector } from '../../redux/postsSlice';
 
 export const Post = ({
   id,
@@ -20,7 +20,6 @@ export const Post = ({
   imageUrl,
   user,
   viewsCount,
-  commentsCount,
   tags,
   children,
   isFullPost,
@@ -29,6 +28,9 @@ export const Post = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { items } = useSelector(commentsSelector);
+  const commentsCount = items.filter((obj) => obj.post?._id === id).length;
+  // const commentsCount = 3;
   const onClickRemove = async () => {
     try {
       if (window.confirm('Вы действительно удалить статью?')) {

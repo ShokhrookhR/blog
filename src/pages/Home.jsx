@@ -7,7 +7,7 @@ import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, fetchTags, postsSelector } from '../redux/postsSlice';
+import { fetchAllComments, fetchPosts, fetchTags, postsSelector } from '../redux/postsSlice';
 import { selectData } from '../redux/authSlice';
 export const Home = () => {
   const dispatch = useDispatch();
@@ -18,8 +18,8 @@ export const Home = () => {
   React.useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
+    dispatch(fetchAllComments());
   }, []);
-  
 
   return (
     <>
@@ -37,7 +37,6 @@ export const Home = () => {
               imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}` : ''}
               createdAt={obj.createdAt}
               viewsCount={obj.viewsCount}
-              commentsCount={3}
               tags={obj.tags}
               isEditable={userData?._id === obj.user._id}
               isLoading={isPostsLoading}

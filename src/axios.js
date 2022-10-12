@@ -6,7 +6,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   config.headers.Authorization = window.localStorage.getItem('token'); //Добавляем в headers Authorization, и вшиваем в него Токен
-  // config.headers.PostId = window.localStorage.getItem('postId');
+  config.headers.PostId = window.localStorage.getItem('postId');
   return config;
 });
 export default instance;

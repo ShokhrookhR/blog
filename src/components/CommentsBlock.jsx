@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import { SideBlock } from "./SideBlock";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import Skeleton from "@mui/material/Skeleton";
+import { SideBlock } from './SideBlock';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import Skeleton from '@mui/material/Skeleton';
 import axios from '../axios';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentsSelector, fetchComments } from '../redux/postsSlice';
 
-export const CommentsBlock = ({ children }) => {
+export const CommentsBlock = ({ children, commentValue }) => {
   const { items, status } = useSelector(commentsSelector);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -21,7 +21,7 @@ export const CommentsBlock = ({ children }) => {
 
   React.useEffect(() => {
     dispatch(fetchComments(id));
-  }, []);
+  }, [commentValue]);
 
   return (
     <SideBlock title="Комментарии">
