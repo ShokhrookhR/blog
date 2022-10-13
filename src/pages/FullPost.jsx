@@ -27,7 +27,7 @@ export const FullPost = () => {
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
-        window.localStorage.setItem('postId', id);
+        window.sessionStorage.setItem('postId', id);
       })
       .catch((err) => {
         console.log('Не удалось загрузить пост');
