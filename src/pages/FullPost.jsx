@@ -17,8 +17,8 @@ export const FullPost = () => {
 
   const { id } = useParams();
   const onSubmitChild = async (value) => {
-    dispatch(fetchCommentText({ text: value }));
-    setCommentValue(value);
+    await dispatch(fetchCommentText({ text: value }));
+    await setCommentValue(value);
   };
   React.useEffect(() => {
     setIsLoading(true);
