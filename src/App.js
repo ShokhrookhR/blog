@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import { CommentsBlock, Header } from './components';
 import { Home, FullPost, Registration, AddPost, Login } from './pages';
 import { fetchAuthMe } from './redux/authSlice';
+import PostsOfCurrentTag from './pages/PostsOfCurrentTag';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/comments/:id" element={<CommentsBlock />} />
+          <Route path="/tags/:name" element={<PostsOfCurrentTag />} />
         </Routes>
       </Container>
     </>

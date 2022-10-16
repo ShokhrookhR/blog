@@ -27,6 +27,7 @@ export const Home = () => {
   const onClickSort = (event, value) => {
     setSortBy(value);
   };
+  console.log(tags);
 
   return (
     <>
@@ -43,6 +44,7 @@ export const Home = () => {
 
       <Grid container spacing={4}>
         <Grid xs={8} item>
+          {posts.status === 'loading' && <h1>Loading...</h1>}
           {sortBy === 0
             ? posts.items.map((obj) => (
                 <Post
