@@ -8,6 +8,7 @@
 .inner {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
 }
 
 .logo {
@@ -20,6 +21,10 @@
   border-radius: 5px;
   padding: 0 10px;
   text-decoration: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: #4361ee;
@@ -27,9 +32,12 @@
 }
 
 .buttons {
-  button {
-    margin-left: 10px;
-  }
+  display:flex;
+  flex-wrap: wrap;
+  // button {
+  //   margin-left: 10px;
+  // }
+  gap: 10px;
 
   a {
     text-decoration: none;

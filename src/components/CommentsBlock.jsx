@@ -25,6 +25,7 @@ export const CommentsBlock = ({ children, commentValue }) => {
 
   return (
     <SideBlock title="Комментарии">
+      {children}
       <List>
         {(isLoading ? [...Array(5)] : items).map((obj, index) => (
           <React.Fragment key={index}>
@@ -49,7 +50,6 @@ export const CommentsBlock = ({ children, commentValue }) => {
           </React.Fragment>
         ))}
       </List>
-      {children}
     </SideBlock>
   );
 };
